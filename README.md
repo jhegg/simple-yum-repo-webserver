@@ -14,7 +14,7 @@ I wanted a simple way to spin up a YUM repo behind a webserver, given one or mor
 1. Create a directory from where the RPM files will be hosted as a YUM repo.
 2. Copy the desired RPM files into that directory.
 3. Fetch and run the container, changing `/path/to/local/rpms` to be the directory where the RPMs exist:
-  `docker run -it --rm -p 80:80 -v /path/to/local/rpms:/usr/share/nginx/html --name simple-yum-repo-webserver simple-yum-repo-webserver`
+  `docker run -it --rm -p 80:80 -v /path/to/local/rpms:/usr/share/nginx/html --name simple-yum-repo-webserver joshhegg/simple-yum-repo-webserver`
 4. Verify that the YUM repo metadata was generated and can be fetched from the webserver, by browsing to: http://localhost/repodata/repomd.xml (you should see an XML response instead of an error).
 5. When finished, `Ctrl+C` to stop and remove the Docker container.
 
@@ -24,7 +24,7 @@ The example in the Usage section runs the container in the foreground (`-it`), r
 
 You could also run the container in the background, by replacing `-it` with `-d`: `docker run -d --rm -p 80:80 -v /path/to/local/rpms:/usr/share/nginx/html --name simple-yum-repo-webserver simple-yum-repo-webserver` . You will then need to stop the container using `docker stop simple-yum-repo-webserver` instead of `Ctrl+C`.
 
-You could choose to use a random port on the host, in particular if port 80 is already used, by replacing `-p 80:80` with `-P`: `docker run -d --rm -P -v /path/to/local/rpms:/usr/share/nginx/html --name simple-yum-repo-webserver simple-yum-repo-webserver` . You will then need to inspect the container port status using `docker ps` to see which port has been selected.
+You could choose to use a random port on the host, in particular if port 80 is already used, by replacing `-p 80:80` with `-P`: `docker run -d --rm -P -v /path/to/local/rpms:/usr/share/nginx/html --name simple-yum-repo-webserver joshhegg/simple-yum-repo-webserver` . You will then need to inspect the container port status using `docker ps` to see which port has been selected.
 
 ## Notes
 
