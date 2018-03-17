@@ -6,7 +6,7 @@ services:
 install:
   - docker build -t simple-yum-repo-webserver .
   - docker run -d --name simple-yum-repo-webserver-nofiles simple-yum-repo-webserver
-  - docker run -d -v ./test:/usr/share/nginx/html --name simple-yum-repo-webserver-rpm simple-yum-repo-webserver
+  - docker run -d -v `pwd`/test:/usr/share/nginx/html --name simple-yum-repo-webserver-rpm simple-yum-repo-webserver
 
 script:
   - |
