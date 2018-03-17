@@ -11,15 +11,15 @@ done
 
 docker inspect simple-yum-repo-webserver-nofiles
 
-docker inspect simple-yum-repo-webserver-rpm
-
-EXITCODE=$(docker inspect --format={{.State.Exitcode}} simple-yum-repo-webserver-nofiles)
+EXITCODE=$(docker inspect --format={{.State.ExitCode}} simple-yum-repo-webserver-nofiles)
 if [ "$EXITCODE" -eq 1 ]; then
   echo "Container exited with expected failure"
 else
   echo "Container did not exit with expected failure"
   exit 1
 fi
+
+docker inspect simple-yum-repo-webserver-rpm
 
 RUNNING=$(docker inspect --format={{.State.Running}} simple-yum-repo-webserver-rpm)
 if [ "$RUNNING" == "true" ]; then
