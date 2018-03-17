@@ -3,3 +3,6 @@
 
 # Shell scripts should have LF line endings.
 *.sh text eol=lf
+
+# RPM specs should have LF line endings.
+*.spec text eol=lf
