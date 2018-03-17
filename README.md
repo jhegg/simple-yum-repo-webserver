@@ -30,7 +30,8 @@ You could choose to use a random port on the host, in particular if port 80 is a
 
 * You can have any number of subdirectories, each as their own YUM repo. For example, if you use `-v /tmp/yum-repo:/usr/share/nginx/html`, if subdirectories with RPM files exist underneath `/tmp/yum-repo`, then when the Docker container starts it will recursively visit each subdirectory, and run the `createrepo` command which generates the YUM metadata.
 * The webserver does not have a default page, and will return an HTTP 403 Forbidden if you browse to the root path, rather than listing the files.
+* If zero RPM files are found, the container will stop running with an error.
 
 ## How to build the image
 
-`docker build -t simple-yum-repo-webserver`
+`docker build -t simple-yum-repo-webserver .`
