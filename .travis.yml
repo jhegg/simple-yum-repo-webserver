@@ -9,10 +9,11 @@ install:
   - docker run -d -v `pwd`/test:/usr/share/nginx/html --name simple-yum-repo-webserver-rpm simple-yum-repo-webserver
 
 script:
+  - docker --version
+  - |
+    ATTEMPTS=0; until [ $(docker logs simple-yum-repo-webserver-rpm | grep -q "Starting webserver") ] || $ATTEMPTS -eq 10; do echo "Waiting for webserver, attempt $ATTEMPTS"; sleep 1; ATTEMPTS=$(( $ATTEMPTS + 1 )); done
   - |
     [ $(docker inspect --format={{.State.Exitcode}} simple-yum-repo-webserver-nofiles) == "1" ]
-  - |
-    ATTEMPTS=0; until [ $(docker logs simple-yum-repo-webserver-rpm | grep -q "Starting webserver") ] || $ATTEMPTS -eq 10; do echo "Waiting for webserver, attempt $ATTEMPTS"; sleep 1; done
   - |
     [ $(docker inspect --format={{.State.Running}} simple-yum-repo-webserver-nofiles) == "true" ]
   - |
