@@ -11,10 +11,13 @@ install:
 script:
   - docker --version
   - |
-    ATTEMPTS=0; until [ $(docker logs simple-yum-repo-webserver-rpm | grep -q "Starting webserver") ] || [ $ATTEMPTS -eq 10 ]; do echo "Waiting for webserver, attempt $ATTEMPTS"; sleep 2; ATTEMPTS=$(( $ATTEMPTS + 1 )); done
+    ATTEMPTS=0; until [ $(docker logs simple-yum-repo-webserver-rpm | grep -q "Starting webserver") ] || [ $ATTEMPTS -eq 20 ]; do echo "Waiting for webserver, attempt $ATTEMPTS"; sleep 2; ATTEMPTS=$(( $ATTEMPTS + 1 )); done
   - docker inspect simple-yum-repo-webserver-nofiles
+  - docker inspect simple-yum-repo-webserver-nofiles | grep -q '"ExitCode": 1'
   - |
-    [ $(docker inspect --format={{.State.Exitcode}} simple-yum-repo-webserver-nofiles) == "1" ]
+    [ $(docker inspect --format={{.State.Exitcode}} simple-yum-repo-webserver-nofiles) == 1 ]
+  - docker inspect simple-yum-repo-webserver-rpm
+  - docker inspect simple-yum-repo-webserver-rpm | grep -q '"Running": true'
   - |
     [ $(docker inspect --format={{.State.Running}} simple-yum-repo-webserver-rpm) == "true" ]
   - find ./test/repodata
