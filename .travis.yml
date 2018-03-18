@@ -6,11 +6,13 @@ services:
 install:
   - docker build -t simple-yum-repo-webserver .
   - docker run -d --name simple-yum-repo-webserver-nofiles simple-yum-repo-webserver
-  - docker run -d -v ./test:/usr/share/nginx/html --name simple-yum-repo-webserver-rpm simple-yum-repo-webserver
+  - docker run -d -v `pwd`/test:/usr/share/nginx/html --name simple-yum-repo-webserver-rpm simple-yum-repo-webserver
 
 script:
-  - [ $(docker inspect --format={{.State.Exitcode}} simple-yum-repo-webserver-nofiles) == "1" ]
-  - ATTEMPTS=0; until [ $(docker logs simple-yum-repo-webserver-rpm | grep -q "Starting webserver") ] || $ATTEMPTS -eq 10; do echo "Waiting for webserver, attempt $ATTEMPTS"; sleep 1; done
-  - [ $(docker inspect --format={{.State.Running}} simple-yum-repo-webserver-nofiles) == "true" ]
-  - [ -d ./test/repodata ]
-  - [ -f ./test/repodata/repomd.xml ]
+  - docker --version
+  - bash -x test/wait-for-webserver.sh
+  - |
+    [ -d ./test/repodata ]
+  - find ./test/repodata
+  - |
+    [ -f ./test/repodata/repomd.xml ]
